@@ -28,12 +28,12 @@ jobs:
               "docker --version 2>/dev/null || echo DOCKER NOT INSTALLED",
               "aws --version 2>/dev/null || echo AWS CLI NOT INSTALLED",
               "mysql --version 2>/dev/null || echo MYSQL NOT INSTALLED",
-              "aws ssm get-pa rameters-by-path --path /application/banking --with-decryption --region us-east-1"
+              "aws ssm get-parameters-by-path --path /application/banking --with-decryption --region us-east-1"
               ]}' \
             --query 'Command.CommandId' --output text\
             --region us-east-1)
           
-          echo "cmd_id"=$"CMD_ID" >> $GITHUB_OUTPUT
+          echo "cmd_id=$CMD_ID" >> $GITHUB_OUTPUT
 
 
       - name: Show Results
@@ -41,19 +41,19 @@ jobs:
           sleep 20
           aws ssm list-command-invocations \
             --command-id "${{steps.health.outputs.cmd_id}}" --details \
-            --resion us-east-1
+            --region us-east-1 \
             --query "CommandInvocations[*].{Instance:InstanceId,Status,IP:CommandPlugins[0].Output}" \
             --output text
 
           FAILED=$(aws ssm list-command-invocations \
             --command-id "${{steps.health.outputs.cmd_id}}" --details \
             --query "length(CommandInvocations[?Status=='Failed'])" \
-            --output text\
-            --resion us-east-1
+            --output text \
+            --region us-east-1
             )
 
-          ["$FAILED" -gt 0] && \
-          echo "::error::Health Check Failed on $FAILED instances" &&
+          [ "$FAILED" -gt 0 ] && \
+          echo "::error::Health Check Failed on $FAILED instances" && \
           exit 1
 
           echo "ALL Instances Healthy ✅"
