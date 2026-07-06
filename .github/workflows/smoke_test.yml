@@ -28,7 +28,7 @@ jobs:
 
       - name: Run Smoke Test on Fleet
         id: smoke
-        run: |
+         run: |
           CMD_ID=$(aws ssm send-command \
             --targets "Key=tag:App,Values=flask" \
             --document-name "AWS-RunShellScript" \
@@ -63,4 +63,4 @@ jobs:
             echo "::error::Smoke test failed on $FAILED instance(s)!" && \
             exit 1
 
-          echo "✅ Smoke Test Passed"
+          echo "✅ Smoke Test Passed!"
