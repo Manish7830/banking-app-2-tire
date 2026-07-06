@@ -26,6 +26,7 @@ try:
         host=params["DB_HOST"],
         user=params["DB_USER"],
         password=params["DB_PASSEORD"],
+        database=params["DB_NAME"],
         port=params["DB_PORT"],
         connect_timeout=10
     )
