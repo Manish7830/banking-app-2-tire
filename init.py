@@ -38,7 +38,6 @@ try:
 
 except Exception as e:
     print("Error :",e)
-    sys.exit(1)
 
 finally:
     conn.close()
