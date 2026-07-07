@@ -34,8 +34,7 @@ jobs:
           CMD_ID=$(aws ssm send-command \
             --targets "Key=tag:App,Values=flask" \
             --document-name "AWS-RunShellScript" \
-            --parameters '{"commands":[
-              "aws s3 cp s3://875285643684-devops-scripts/init.sql",  
+            --parameters '{"commands":[  
               "aws s3 cp s3://875285643684-devops-scripts/init.py /tmp/init.py",
               "python3 /tmp/init.py || exit 1",
               "rm /tmp/init.py"
